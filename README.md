@@ -7,7 +7,7 @@ The kit installs the official `agy` binary and forces its headless OAuth flow so
 ## Quick start
 
 ```bash
-sbx run --kit git+https://github.com/shelajev/agy-kit.git agy .
+sbx run --kit git+https://github.com/shelajev/agy-sbx-kit.git agy .
 ```
 
 On the first run `agy` prints a Google OAuth URL. Open it in a browser on your laptop, complete the Google sign-in, then paste the callback URL (or code) back into the sandbox terminal. After that the credentials are cached on the sandbox's persistent volume and subsequent runs go straight to the agent.
@@ -18,9 +18,9 @@ For a sandbox you can reattach to later:
 
 ```bash
 sbx create --name agy-current \
-  --kit git+https://github.com/shelajev/agy-kit.git agy .
+  --kit git+https://github.com/shelajev/agy-sbx-kit.git agy .
 
-sbx run --kit git+https://github.com/shelajev/agy-kit.git agy-current
+sbx run --kit git+https://github.com/shelajev/agy-sbx-kit.git agy-current
 ```
 
 For custom agent kits, pass `--kit` again when re-running an existing sandbox if `sbx` does not resolve it automatically.
