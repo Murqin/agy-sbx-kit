@@ -8,7 +8,6 @@ agent:
   # Base image with shell and Docker daemon included
   image: "docker/sandbox-templates:shell-docker"
   # Persist OAuth token, history, and settings across sandbox restarts
-  persistence: persistent
   entrypoint:
     run:
       - agy
