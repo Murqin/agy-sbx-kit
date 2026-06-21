@@ -7,7 +7,7 @@ The kit installs the official `agy` binary and forces its headless OAuth flow so
 ## Quick start
 
 ```bash
-sbx run --kit git+https://github.com/shelajev/agy-sbx-kit.git agy .
+sbx run --kit "git+https://github.com/Murqin/agy-sbx-kit.git" agy . 
 ```
 
 On the first run `agy` prints a Google OAuth URL. Open it in a browser on your laptop, complete the Google sign-in, then paste the callback URL (or code) back into the sandbox terminal. After that the credentials are cached on the sandbox's persistent volume and subsequent runs go straight to the agent.
@@ -17,10 +17,15 @@ On the first run `agy` prints a Google OAuth URL. Open it in a browser on your l
 For a sandbox you can reattach to later:
 
 ```bash
-sbx create --name agy-current \
-  --kit git+https://github.com/shelajev/agy-sbx-kit.git agy .
+sbx create --name your-name-choice --kit "git+https://github.com/Murqin/agy-sbx-kit.git" agy .
+sbx run --kit "git+https://github.com/Murqin/agy-sbx-kit.git" your-name-choice
+```
 
-sbx run --kit git+https://github.com/shelajev/agy-sbx-kit.git agy-current
+## Workspaced & Named sandbox
+```bash
+sbx create --name your-name-choice --kit "git+https://github.com/Murqin/agy-sbx-kit.git" agy ~/your/path/choice
+sbx run --kit "git+https://github.com/Murqin/agy-sbx-kit.git" your-name-choice
+
 ```
 
 For custom agent kits, pass `--kit` again when re-running an existing sandbox if `sbx` does not resolve it automatically.
@@ -48,12 +53,7 @@ To log out from inside the sandbox, run `/logout` at the `agy` prompt.
 
 ## Network policy
 
-The kit allows only:
-
-- `antigravity.google` — installer and docs
-- `antigravity-cli-auto-updater-974169037036.us-central1.run.app` — release manifests and binaries (also used for self-update)
-- `accounts.google.com`, `oauth2.googleapis.com`, `www.googleapis.com` — Google OAuth
-- `cloudaicompanion.googleapis.com`, `cloudcode-pa.googleapis.com`, `generativelanguage.googleapis.com` — Antigravity / Gemini Code Assist APIs
+- Uses default sbx policy
 
 If your workflow needs to reach package registries (npm, PyPI, crates.io, Go modules, etc.) or your own services, fork the kit and extend `network.allowedDomains` in `spec.yaml`.
 
@@ -66,14 +66,6 @@ sbx exec agy-current -- sh -lc 'agy --help < /dev/null'
 ```
 
 You should see the standard `agy` help text. Hitting the actual model requires an authenticated session, so the first interactive run still needs the OAuth paste-back.
-
-## Local clone
-
-If you clone this repo, `run.sh` runs a named sandbox using the local kit path:
-
-```bash
-./run.sh agy-current
-```
 
 Use any sandbox name as the first argument:
 
