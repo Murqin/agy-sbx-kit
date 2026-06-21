@@ -2,37 +2,26 @@ schemaVersion: "1"
 kind: agent
 name: agy
 displayName: Antigravity CLI (agy)
-description: Run Google's Antigravity CLI (agy) inside a Docker Sandbox. First run prints a Google OAuth URL you complete in your local browser; credentials persist across sandbox restarts.
+description: Google Antigravity CLI in a Docker Sandbox.
 
 agent:
+  # Base image with shell and Docker daemon included
   image: "docker/sandbox-templates:shell-docker"
+  # Persist OAuth token, history, and settings across sandbox restarts
+  persistence: persistent
   entrypoint:
     run:
       - agy
 
-network:
-  allowedDomains:
-    # CLI installer + self-update manifests and binaries
-    - "antigravity.google:443"
-    - "antigravity-cli-auto-updater-974169037036.us-central1.run.app:443"
-    # Google OAuth (sign-in + token exchange)
-    - "accounts.google.com:443"
-    - "oauth2.googleapis.com:443"
-    - "www.googleapis.com:443"
-    # Antigravity / Gemini Code Assist model + agent APIs
-    - "cloudaicompanion.googleapis.com:443"
-    - "cloudcode-pa.googleapis.com:443"
-    - "generativelanguage.googleapis.com:443"
-
 environment:
   variables:
-    # agy detects SSH/remote environments and switches to a copy/paste OAuth flow
-    # (prints a URL, you paste the callback URL back). Force that path so the
-    # CLI never tries to spawn a local browser inside the sandbox.
+    # Force agy into terminal OAuth flow instead of opening a browser
     SSH_CONNECTION: "sandbox 0 sandbox 0"
 
 commands:
   install:
+    # Runs once when the sandbox is first created
     - command: "curl -fsSL https://antigravity.google/cli/install.sh | bash"
+      # Install as agent user — root would place binary outside PATH
       user: "1000"
-      description: Install the Antigravity CLI (agy) into ~/.local/bin
+      description: Install agy
