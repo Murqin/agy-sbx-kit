@@ -22,10 +22,10 @@ sbx run --kit "git+https://github.com/Murqin/agy-sbx-kit.git" your-name-choice
 ```
 
 ## Workspaced & Named sandbox
+
 ```bash
 sbx create --name your-name-choice --kit "git+https://github.com/Murqin/agy-sbx-kit.git" agy ~/your/path/choice
 sbx run --kit "git+https://github.com/Murqin/agy-sbx-kit.git" your-name-choice
-
 ```
 
 For custom agent kits, pass `--kit` again when re-running an existing sandbox if `sbx` does not resolve it automatically.
@@ -49,29 +49,21 @@ To log out from inside the sandbox, run `/logout` at the `agy` prompt.
   - `curl -fsSL https://antigravity.google/cli/install.sh | bash` — downloads the platform-specific `agy` binary into `~/.local/bin/agy` and runs the binary's `install` step for shell wiring.
 - **Entrypoint:** `agy` (the shell-docker image puts `~/.local/bin` on PATH).
 - **Persistence:** Inherited from `sbx` defaults — the home directory persists across runs, so the OAuth token doesn't need to be re-issued.
-- **Self-update:** `agy` self-updates in the background; the updater domain is allowlisted.
+- **Self-update:** `agy` self-updates in the background; the updater domain must be reachable under your Docker Sandboxes network policy.
 
 ## Network policy
 
 - Uses default sbx policy
-
-If your workflow needs to reach package registries (npm, PyPI, crates.io, Go modules, etc.) or your own services, fork the kit and extend `network.allowedDomains` in `spec.yaml`.
 
 ## Smoke test
 
 For `sbx exec`, close or pipe stdin so the CLI does not block waiting for input:
 
 ```bash
-sbx exec agy-current -- sh -lc 'agy --help < /dev/null'
+sbx exec your-name-choice -- sh -lc 'agy --help < /dev/null'
 ```
 
 You should see the standard `agy` help text. Hitting the actual model requires an authenticated session, so the first interactive run still needs the OAuth paste-back.
-
-Use any sandbox name as the first argument:
-
-```bash
-./run.sh my-sandbox
-```
 
 ## License
 
